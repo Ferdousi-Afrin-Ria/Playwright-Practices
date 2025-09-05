@@ -1,2 +1,2 @@
 # Playwright-Practices
-Practices
+Practices and learnings
