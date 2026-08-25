@@ -82,6 +82,29 @@ async addToCart(productName) {
     return false;
 }
 
+async addMultipleProductsIntoCart(product1,product3) {
+    const products = await this.page.$$(this.allItemSelector);
+    const buttons = await this.page.$$(this.addToCartBtnSelector);
+
+    let addedProduct1 = false;
+    let addedProduct2 = false;
+
+    for (let i = 0; i < products.length; i++) {
+        const text = await products[i].textContent();
+
+        if (text === product1) {
+            await buttons[i].click();
+            addedProduct1 = true;
+        }
+
+        if (text === product3) {
+            await buttons[i].click();
+            addedProduct2 = true;
+        }
+    }
+
+    return addedProduct1 && addedProduct2;
+}
 
 async selectNameZtoA(){
     await this.page.selectOption(this.productSortDropdown, 'za');

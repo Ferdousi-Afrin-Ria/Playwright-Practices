@@ -9,9 +9,14 @@ class cartPage{
         this.postalCode = page.locator('#postal-code')
         this.continueBtn = page.locator('#continue')
         this.pageTitle = page.locator(".title")
-this.paymentOverViewTitle = page.locator('[data-test="payment-info-label"]')
-this.totalPrice = page.locator('[data-test="total-info-label"]')
-this.finishBtn = page.locator("#finish")
+        this.paymentOverViewTitle = page.locator('[data-test="payment-info-label"]')
+        this.totalPrice = page.locator('[data-test="total-info-label"]')
+        this.finishBtn = page.locator("#finish")
+        this.continueShoppingBtn = page.locator('#continue-shopping')
+    this.allItem = page.locator(this.allItemSelector);
+    this.productDetailsName = page.locator('.inventory_details_name.large_size');
+    this.removeBtnSelector = '.cart_button';
+    
 
     }
 
@@ -26,6 +31,18 @@ this.finishBtn = page.locator("#finish")
             }
         }return false
     }
+////this single function can be used while parsing single/multiple products using array/////
+//     async areProductsAdded(productNames) {
+//     const productList = await this.page.$$(this.allItemSelector);
+
+//     const namesOnPage = [];
+
+//     for (const product of productList) {
+//         namesOnPage.push(await product.textContent());
+//     }
+
+//     return productNames.every(name => namesOnPage.includes(name));
+// }
 
     async isCheckoutPageShown(){   
         try {
@@ -51,9 +68,34 @@ this.finishBtn = page.locator("#finish")
             await this.finishBtn.click();
             return true
         }
-else return false
+        else return false
     }
-       
+      
+    async removeProductfromCart(product1){
+        const products = await this.page.$$(this.allItemSelector);
+        const buttons = await this.page.$$(this.removeBtnSelector);
+
+        for (let i = 0; i < products.length; i++) {
+            const text = await products[i].textContent();
+            if (text === product1) {
+                await buttons[i].click();
+                const updatedProducts = await this.page.$$(this.allItemSelector);
+                 for (const product of updatedProducts) {
+                    const updatedText = await product.textContent();
+                    if (updatedText === product1) {
+                        return false; // Product is still in the cart
+                    }
+                }
+
+                return true; // Checked the whole list and product is gone
+            }
+        }
+
+        return false; 
+    }
+
+
+    
 }
 
 export default cartPage;
