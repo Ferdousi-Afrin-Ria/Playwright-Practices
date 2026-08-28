@@ -9,7 +9,6 @@ class loginPage{
         this.error = page.locator("h3[data-test='error']")
     }
     async login(username, password){
-      //  const testConfigObj = new TestConfig();
         await this.page.goto(TestConfig.baseUrl);
         await this.userName.fill(username);
         await this.password.fill(password);
