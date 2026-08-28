@@ -151,8 +151,29 @@ async navigateToCartPage(){
     if (isVisble){
         return true
     }else return false
-
-
 }
+
+async removeProductfromHome(product1){
+        const products = await this.page.$$(this.allItemSelector);
+        const buttons = await this.page.$$(this.addToCartBtnSelector);
+
+        for (let i = 0; i < products.length; i++) {
+            const text = await products[i].textContent();
+            if (text === product1) {
+                await buttons[i].click();
+                const updatedProducts = await this.page.$$(this.allItemSelector);
+                 for (const product of updatedProducts) {
+                    const updatedText = await product.textContent();
+                    if (updatedText === product1) {
+                        return false; // Product is still in the cart
+                    }
+                }
+
+                return true; // Checked the whole list and product is gone
+            }
+        }
+
+        return false; 
+    }
 }
 export default homePage;

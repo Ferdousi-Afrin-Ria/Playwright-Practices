@@ -13,10 +13,9 @@ class cartPage{
         this.totalPrice = page.locator('[data-test="total-info-label"]')
         this.finishBtn = page.locator("#finish")
         this.continueShoppingBtn = page.locator('#continue-shopping')
-    this.allItem = page.locator(this.allItemSelector);
-    this.productDetailsName = page.locator('.inventory_details_name.large_size');
-    this.removeBtnSelector = '.cart_button';
-    
+        this.allItem = page.locator(this.allItemSelector);
+        this.productDetailsName = page.locator('.inventory_details_name.large_size');
+        this.removeBtnSelector = '.cart_button';
 
     }
 

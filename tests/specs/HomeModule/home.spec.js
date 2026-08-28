@@ -3,6 +3,7 @@ import loginPage from '../../pageObjects/loginScreen/loginScreen'
 import LoginData from '../../testData/loginData/loginData.json' assert { type: 'json' };
 import homePage from '../../pageObjects/homeScreen/homeScreen'
 import products from '../../testData/productsData/products.json'
+import cartPage from '../../pageObjects/checkoutScreen/checkoutScreen';
 
 
 test.describe('Home module functionality', () =>{
@@ -53,6 +54,19 @@ test.describe('Home module functionality', () =>{
         await  loginPageObject.login(LoginData.valid_username, LoginData.valid_password);
         const homePageObj =  new homePage(page);
         expect(await homePageObj.navigateToCartPage()).toBe(true);
+    })
+
+    test('validate product can be removed from home page or not', async({page}) =>{
+        const loginPageObject = new loginPage(page);
+        await  loginPageObject.login(LoginData.valid_username, LoginData.valid_password);
+        const homePageObj =  new homePage(page);
+        await homePageObj.addToCart(products.productName2);
+        await homePageObj.navigateToCartPage();
+        const cartPageObj = new cartPage(page);
+        await cartPageObj.ifAddedProductShowing(products.productName2)
+        await cartPageObj.continueShoppingBtn.click();
+        await homePageObj.addToCart(products.productName1);
+        await homePageObj.removeProductfromHome(products.productName2)
 
     })
 })
